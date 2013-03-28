@@ -1,0 +1,497 @@
+/*
+  Name: Hax Race 2.0
+  Copyright: Aluno IFET 2011
+  Author: Mateus Ferreira Silva
+  Date: 08/11 
+  Description: Constinuação do jogo Hax Race 1.0 feito em pascal durante o primeiro
+               periodo do curso Sistemas para Internet IFET Barbacena. 
+               Feito em C + Allegro.
+*/
+
+#include <allegro.h>
+#include <time.h>
+
+void init();
+void deinit();
+void highcolor_fade_in(BITMAP *bmp_orig, int speed,int x,int y); // Fade In
+void highcolor_fade_out(int speed,int x,int y); // Fade Out 
+void intro(); // Introdução
+void jogar();
+void instrucoes();
+void info();
+int fsair();
+void niveis();
+
+int main() {
+        
+	init();
+	
+    int opx=322, opy=500;
+    int sair=0;
+    
+    FONT *font1 = load_font("fonts/niagra24i.pcx", NULL, NULL);
+    FONT *font2 = load_font("fonts/arrows.pcx", NULL, NULL);
+    
+    BITMAP *fundo = load_bitmap("img/fundo.bmp", NULL);
+	BITMAP *buffer = create_bitmap(800, 600);
+	BITMAP *hr = load_bitmap("img/hr.bmp", NULL);
+	/*
+	SAMPLE *som;
+    som=load_wav("wav/Race Car Fast By.wav");
+    play_sample(som,255,90,1000,0);    
+	intro();
+	*/
+	
+	SAMPLE *click = load_wav("wav/select.wav");
+	SAMPLE *tema = load_wav("wav/MK.wav");
+	SAMPLE *acel = load_wav("wav/acel.wav");
+	SAMPLE *entrou = load_wav("wav/entrou.wav");
+	SAMPLE *exit = load_wav("wav/sair.wav");
+	
+    int count = 1;
+	
+	while (!sair) 
+    {   
+        
+        if (count == 1)
+           play_sample(tema,255,90,1000,1);
+        count++;
+        
+        vsync();
+        draw_sprite(screen,fundo,0,0);   
+		/*
+        textout_ex(screen,font1,"Jogar",500,290,makecol(255,255,255),-1);
+		textout_ex(screen,font1,"Instrucoes",520,350,makecol(255,255,255),-1);
+		textout_ex(screen,font1,"Informações",540,410,makecol(255,255,255),-1);
+		textout_ex(screen,font1,"Sair",560,470,makecol(255,255,255),-1);
+		*/
+		draw_sprite(screen,hr,opy,opx);
+        //textout_ex(screen,font1,"•",opy,opx,makecol(200,200,200),-1);
+    
+    if(readkey())
+    {
+                 
+		if(key[KEY_UP])
+        {
+           if(opx > 322)
+           {
+              play_sample(click,255,90,1000,0);         
+              opx -= 39;
+              //opy -= 20; 
+              rest(100); 
+              stop_sample(click);                       
+           }           
+           
+     
+        }
+        if(key[KEY_DOWN])
+        {
+           if(opx<478)   
+           {  
+              play_sample(click,255,90,1000,0); 
+              opx += 39;
+              //opy += 20;
+              rest(100);
+              stop_sample(click);
+                            
+           }
+        }
+        
+           
+          if(key[KEY_ENTER])
+          {
+             if(opx == 322)
+             {
+                 // Executa o codigo de Jogar 
+                 count = 1;
+                 play_sample(acel,255,90,1000,0); 
+                 rest(3000);
+                 stop_sample(acel);
+                 stop_sample(tema);
+                 niveis();
+                  // para voltar a musica ao voltar no menu
+                      
+             }
+             else if(opx == 400)
+             {
+                // Executa o codigo de Instruções
+                play_sample(entrou,255,90,1000,0); 
+                rest(100);
+                stop_sample(entrou);
+                instrucoes();
+             }
+             else if(opx == 439)
+             {
+                // Executa o codigo de Informacoes
+                play_sample(entrou,255,90,1000,0); 
+                rest(100);
+                stop_sample(entrou);
+                info();
+             }
+             else if(opx == 478)
+             {
+                // Executa o codigo de sair
+                stop_sample(tema);
+                play_sample(exit,255,90,1000,0); 
+                rest(1500);
+                stop_sample(exit);
+                fsair();
+                sair = fsair();
+             }
+          }
+    }     
+        clear_keybuf();       					
+	}
+	
+	stop_sample(tema);
+	//stop_sample(som);
+    destroy_font(font1);
+    destroy_font(font2);
+    destroy_bitmap(fundo);
+    destroy_bitmap(hr);
+	deinit();
+	return 0;
+}
+END_OF_MAIN()
+//---------------------------------------------------------------------
+void init() {
+	int depth, res;
+	allegro_init();
+	set_uformat(U_ASCII); // Habilita acentuação em ALGUMAS FONTES
+	depth = desktop_color_depth();
+	if (depth == 0) depth = 32;
+	set_color_depth(depth);
+	res = set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
+	if (res != 0) {
+		allegro_message(allegro_error);
+		exit(-1);
+	}
+	if(install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL)) {
+        allegro_message("Sound Error: %s", allegro_error);
+}  
+	 
+	install_timer();
+	install_keyboard();
+	install_mouse();
+	/* add other initializations here */
+}
+//---------------------------------------------------------------------
+void deinit() {
+	clear_keybuf();
+	/* add other deinitializations here */
+}
+//----------------------------------------------------------------------
+
+void jogar()
+{
+    SAMPLE *topgear = load_wav("wav/TopGear.wav");
+    play_sample(topgear,255,90,1000,0); 
+ 
+    int Carro_x = 260,Carro_y = 430;
+    int esq = 0,dir = 0,cima= 0,baixo =0;  
+    int random;
+    srand(time(NULL));// gera numero aleatório toda hora que iniciado   
+    random=rand()%10;//%10 gera de 0  a 9 
+    PALLETE pl;
+    BITMAP *buffer = create_bitmap(800, 600);
+    BITMAP *carro = load_bitmap("img/Carro4.bmp", pl);
+    BITMAP *logo = load_bitmap("img/minilogo.bmp", pl);
+    BITMAP *itens = load_bitmap("img/itens.bmp", pl);
+    
+    while (!key[KEY_ESC]) 
+    {   
+        rectfill(screen, 603, 0, 800, 600, makecol(100, 100, 100));                              		
+        draw_sprite(screen,carro,Carro_x - esq + dir,Carro_y - cima + baixo );
+        line(screen, 600,0, 600,600, makecol(100,150,100 ));
+        line(screen, 601,0, 601,600, makecol(100,150,100 ));
+        line(screen, 602,0, 602,600, makecol(100,150,100 ));
+        draw_sprite(screen,logo,610,5 );
+        line(screen, 601,40, 800,40, makecol(100,150,100 ));
+        line(screen, 601,41, 800,41, makecol(100,150,100 ));
+        line(screen, 601,42, 800,42, makecol(100,150,100 ));
+        draw_sprite(screen,itens,625,50 );
+        // Movimento e limites laterais do carro              	
+  		if (key[KEY_LEFT])		
+           if (Carro_x - esq + dir != 10)  
+        		 esq += 10;        
+           if (key[KEY_RIGHT])
+               if (Carro_x - esq + dir != 520)
+                 dir += 10; 
+           if (key[KEY_UP])
+               if (Carro_y - cima + baixo != 0)           
+   		          cima += 10; 
+           if (key[KEY_DOWN])
+               if (Carro_y - cima + baixo != 430)  
+      		      baixo += 10;       
+        vsync();
+        rest(5);
+        blit(buffer, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
+        
+      
+    } 
+   destroy_bitmap(buffer);   
+   destroy_bitmap(carro);
+   stop_sample(topgear);
+   destroy_bitmap(logo);
+   destroy_bitmap(itens);
+}
+//---------------------------------SAIR---------------------------------
+int fsair()
+{
+   rectfill(screen, 0, 0, 800, 600, makecol(0, 0, 0));
+   rest(500); 
+   return 1;
+}
+//---------------------------TELA DE NIVEIS------------------------------
+void niveis()
+{
+  int opy=120;
+  SAMPLE *sonic = load_wav("wav/Sonic4.wav");
+  play_sample(sonic,255,90,1000,0);    
+  SAMPLE *click = load_wav("wav/select.wav");
+  BITMAP *fundo2 = load_bitmap("img/fundo2.bmp", NULL);
+  FONT *font1 = load_font("fonts/cooper24i.pcx", NULL, NULL);
+  FONT *font2 = load_font("fonts/aSeta20.pcx", NULL, NULL);
+  FONT *font3 = load_font("fonts/MV Boli18r.pcx", NULL, NULL);
+  
+  while(!key[KEY_ESC])
+  { 
+    vsync();
+    draw_sprite(screen,fundo2,0,0);                              
+    textout_ex(screen,font1,"Escolha a Dificuldade",190,30,makecol(255,255,255),-1); 
+    //textout_ex(screen,font3,"-----------------------------------------------------------------",40,80,makecol(255,0,0),-1);
+    line(screen, 40,90, 800-40,90, makecol(0,255,0 ));
+    textout_ex(screen,font1,"Facil",150,130,makecol(255,255,255),-1);
+    textout_ex(screen,font1,"Medio",350,130,makecol(255,255,255),-1);
+    textout_ex(screen,font1,"Dificil",550,130,makecol(255,255,255),-1);
+    
+    textout_ex(screen,font2,"a",opy,135,makecol(200,200,200),-1);
+    
+    //----------------------------- Escreve descriçao do nivel ------
+         if(opy == 120)
+             {                                
+                 textout_ex(screen,font3,"Este nivel nao ira testar suas habilidades",100,210,makecol(255,255,0),-1);             
+             }
+             else if(opy == 320)
+             {
+                 textout_ex(screen,font3,"Suas habilidades serao testadas",175,210,makecol(255,255,0),-1);
+             }
+             else if(opy == 520)
+             {
+                 textout_ex(screen,font3,"Este nivel lhe trara pessadelos",170,210,makecol(255,255,0),-1);
+             }
+         //---------------------------------------------------------------
+    
+    if(readkey())
+    {
+                 
+		if(key[KEY_LEFT])
+        {
+           if(opy > 120)
+           {
+              play_sample(click,255,90,1000,0);         
+              opy -= 200; 
+              rest(100); 
+              stop_sample(click);                       
+           }      
+        }
+        if(key[KEY_RIGHT])
+        {
+           if(opy<520)   
+           {  
+              play_sample(click,255,90,1000,0); 
+              opy += 200;
+              rest(100);
+              stop_sample(click);                            
+           }
+        }
+                 
+           // Apos apertar ENTER     
+          if(key[KEY_ENTER])
+          {
+             if(opy == 120)
+             {
+                 // Executa o codigo de Facil  
+                 stop_sample(sonic);                
+                 jogar();           
+                      
+             }
+             else if(opy == 320)
+             {
+                // Executa o codigo de Medil
+                stop_sample(sonic);                
+                jogar();
+                
+             }
+             else if(opy == 520)
+             {
+                // Executa o codigo de Dificil
+                stop_sample(sonic);                
+                jogar();
+                
+             }
+             
+          } 
+          clear_keybuf();
+    }   
+     
+  }
+    stop_sample(sonic);   
+    destroy_bitmap(fundo2);
+    destroy_font(font1);
+    destroy_font(font2); 
+    destroy_font(font3); 
+}
+//---------------------------INSTRUÇÕES----------------------------------
+void instrucoes()
+{
+    BITMAP *escrito = load_bitmap("img/comousarsetas.bmp", NULL);
+    BITMAP *arrows = load_bitmap("img/setas_padrao.bmp", NULL);
+    BITMAP *arrowsl = load_bitmap("img/setas_left.bmp", NULL);
+    BITMAP *arrowsr = load_bitmap("img/setas_right.bmp", NULL);
+    BITMAP *arrowsu = load_bitmap("img/setas_cima.bmp", NULL);
+    BITMAP *arrowsd = load_bitmap("img/setas_baixo.bmp", NULL); 
+    
+     
+  while(!key[KEY_ESC])
+  {
+    rest(150);
+    
+    vsync();
+        
+    rectfill(screen, 0, 0, 800, 600, makecol(0, 0, 0)); 
+    line(screen, 40,50, 800-40,50, makecol(0,255,0 )); 
+    line(screen, 40,600-50, 800-40,600-50, makecol(0,255,0 )); 
+ 
+    draw_sprite(screen,arrows,0,60);                     
+    draw_sprite(screen,escrito,280,200);               
+     if(readkey())
+     {               
+      if (key[KEY_LEFT])
+      {              
+         draw_sprite(screen,arrowsl,0,60);                     
+         draw_sprite(screen,escrito,280,200); 
+         rest(10);         
+      }		                 
+      if (key[KEY_RIGHT])
+      {
+         draw_sprite(screen,arrowsr,0,60);                     
+         draw_sprite(screen,escrito,280,200);  
+         rest(10);        
+      }         
+      if (key[KEY_UP])
+      {
+         draw_sprite(screen,arrowsu,0,60);                     
+         draw_sprite(screen,escrito,280,200);
+         rest(10);          
+      }               
+      if (key[KEY_DOWN])
+      {
+         draw_sprite(screen,arrowsd,0,60);                     
+         draw_sprite(screen,escrito,280,200); 
+         rest(10);         
+      }
+     } // if readkey   
+         clear_keybuf();                               
+  }  
+    destroy_bitmap(escrito); 
+    destroy_bitmap(arrows);
+    destroy_bitmap(arrowsl);
+    destroy_bitmap(arrowsr);
+    destroy_bitmap(arrowsu);
+    destroy_bitmap(arrowsd);
+    
+}
+//-----------------------------CREDITOS-------------------------------------
+void info()
+{ 
+    vsync();                         
+    BITMAP *creditos = load_bitmap("img/creditos.bmp",NULL);
+    draw_sprite(screen,creditos,0,0);  
+    line(screen, 40,90, 800-40,90, makecol(0,255,0 ));    
+    line(screen, 40,220, 800-40,220, makecol(0,255,0 ));     
+    line(screen, 40,380, 800-40,380, makecol(0,255,0 ));
+            
+  while(!key[KEY_ESC])
+  {    
+  }
+}
+// -----------------------------------------------------------------------------
+void intro()
+{
+      
+     // INTRODUÇÃO HAX RACE 2.0   
+    rectfill(screen, 0, 0, 800, 600, makecol(0, 0, 0));        
+    BITMAP *logo = load_bitmap("img/haxrace.bmp",NULL);
+    highcolor_fade_in(logo,1,140,200);
+    rest(3000);
+    BITMAP *ifet = load_bitmap("img/IFET.bmp",NULL);
+    highcolor_fade_in(ifet,1,150,200);   
+    rest(1000);
+    //highcolor_fade_out(16,140,200);
+	
+   // FIM INTRODUÇÃO   
+   
+    destroy_bitmap(logo);
+	destroy_bitmap(ifet);  
+	
+
+}
+//----------------------------------------------------------------------------
+
+// -------------------------------faz o fade in de BITMAPS--------------------
+void highcolor_fade_in(BITMAP *bmp_orig, int speed,int x,int y)
+{
+   BITMAP *bmp_buff;
+
+    if ((bmp_buff = create_bitmap(SCREEN_W, SCREEN_H)))
+    {
+        int a;
+        if (speed <= 0) speed = 16;
+
+        for (a = 0; a < 256; a+=speed)
+        {
+            clear(bmp_buff);
+            set_trans_blender(0,0,0,a);
+            draw_trans_sprite(bmp_buff, bmp_orig, x, y);
+            vsync();
+            blit(bmp_buff, screen, 0,0, 0,0, SCREEN_W, SCREEN_H);
+        }
+        destroy_bitmap(bmp_buff);
+    } 
+
+    blit(bmp_orig, screen, x,y, x,y, SCREEN_W, SCREEN_H);
+}
+// ----------------------- faz o fade out de BITMAPS --------------------------
+void highcolor_fade_out(int speed,int x,int y)
+{
+    BITMAP *bmp_orig, *bmp_buff;
+
+    if ((bmp_orig = create_bitmap(SCREEN_W, SCREEN_H)))
+    {
+        if ((bmp_buff = create_bitmap(SCREEN_W, SCREEN_H)))
+        {
+            int a;
+            blit(screen, bmp_orig, 0,0, 0,0, SCREEN_W, SCREEN_H);
+            if (speed <= 0) speed = 16;
+
+            for (a = 255-speed; a > 0; a-=speed)
+            {
+                clear(bmp_buff);
+                set_trans_blender(0,0,0,a);
+                draw_trans_sprite(bmp_buff, bmp_orig, x, y);
+                vsync();
+                blit(bmp_buff, screen, 0,0, 0,0, SCREEN_W, SCREEN_H);
+            }
+            destroy_bitmap(bmp_buff);
+        }
+        destroy_bitmap(bmp_orig);
+    }
+
+    rectfill(screen, 0,0, SCREEN_W,SCREEN_H, makecol(0,0,0));
+}
+
+
+
+
+

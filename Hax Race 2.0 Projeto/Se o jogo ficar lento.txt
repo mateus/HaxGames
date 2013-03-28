@@ -1,0 +1,6 @@
+Se o jogo estiver lento, com FPS* menor que 60 faca o seguinte:
+
+Abra o arquivo "config.txt" e mude o valor de "colordepth" de 32 para 16, isso deixara o jogo com 16 bits de profundidade de cor.
+Caso o leg continue, basta, ainda no arquivo "config.txt" mudar o vsync de 1 para 0, dessa forma voce estara desaivando o vsync.
+
+*para saber a quantos FPS o jogo esta rodando, basta abrir o arquivo "config.txt" e mudar de 0 para 1 o valor do campo "exibirFps".

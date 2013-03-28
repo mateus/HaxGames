@@ -1,0 +1,98 @@
+[Project]
+FileName=Hax Box.0.dev
+Name=Hax Box
+UnitCount=5
+Type=0
+Ver=1
+ObjFiles=
+Includes="C:\Documents and Settings\aluno\Meus documentos\Dev-CppPortable\App\devcpp\include"
+Libs="C:\Documents and Settings\aluno\Meus documentos\Dev-CppPortable\App\devcpp\lib"
+PrivateResource=Hax_Box_private.rc
+ResourceIncludes="C:\Documents and Settings\aluno\Meus documentos\Dev-CppPortable\App\devcpp\dll"
+MakeIncludes=
+Compiler=-DALLEGRO_STATICLINK_@@_
+CppCompiler=-DALLEGRO_STATICLINK_@@_
+Linker=-lalleg_s -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lole32 -ldinput -lddraw -ldxguid -lwinmm -ldsound -lalpng -lalgif -ljpgal -lgstrm_@@_-lalleg _@@_
+IsCpp=0
+Icon=
+ExeOutput=
+ObjectOutput=
+OverrideOutput=0
+OverrideOutputName=Hax Box.0
+HostApplication=
+Folders=
+CommandLine=
+UseCustomMakefile=0
+CustomMakefile=
+IncludeVersionInfo=1
+SupportXPThemes=0
+CompilerSet=0
+CompilerSettings=0000000000000000000000
+
+[Unit1]
+FileName=Hax Box.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=$(CC) -c "Hax Box.c" -o "Hax Box.o" $(CFLAGS)
+
+[VersionInfo]
+Major=2
+Minor=0
+Release=0
+Build=0
+LanguageID=1046
+CharsetID=1252
+CompanyName=
+FileVersion=1
+FileDescription=Hax Box
+InternalName=Hax Box
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=Hax Box
+ProductName=Hax Box
+ProductVersion=1
+AutoIncBuildNr=0
+
+[Unit2]
+FileName=icon.rc
+Folder=Hax_Box
+Compile=1
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
+FileName=pmask\pmask.c
+CompileCpp=0
+Folder=Hax_Box
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=pmask\pmask.h
+CompileCpp=0
+Folder=Hax_Box
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit5]
+FileName=al_screen\al_screen.c
+CompileCpp=0
+Folder=Hax_Box
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+

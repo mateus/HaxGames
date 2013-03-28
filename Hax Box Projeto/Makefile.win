@@ -1,0 +1,39 @@
+# Project: Hax Box
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = Hax_Box_private.res
+OBJ  = "Hax\ Box.o" pmask/pmask.o al_screen/al_screen.o $(RES)
+LINKOBJ  = "Hax Box.o" pmask/pmask.o al_screen/al_screen.o $(RES)
+LIBS =  -L"D:/Dev-Cpp/lib" -L"C:/Documents and Settings/aluno/Meus documentos/Dev-CppPortable/App/devcpp/lib" -mwindows -lalleg_s -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lole32 -ldinput -lddraw -ldxguid -lwinmm -ldsound -lalpng -lalgif -ljpgal -lgstrm -lalleg   
+INCS =  -I"D:/Dev-Cpp/include" 
+CXXINCS =  -I"D:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"D:/Dev-Cpp/include/c++/3.4.2/backward"  -I"D:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"D:/Dev-Cpp/include/c++/3.4.2"  -I"D:/Dev-Cpp/include" 
+BIN  = "Hax Box.exe"
+CXXFLAGS = $(CXXINCS) -DALLEGRO_STATICLINK  
+CFLAGS = $(INCS) -DALLEGRO_STATICLINK  
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before "Hax Box.exe" all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o "Hax Box.exe" $(LIBS)
+
+"Hax\ Box.o": Hax\ Box.c
+	$(CC) -c "Hax Box.c" -o "Hax Box.o" $(CFLAGS)
+
+pmask/pmask.o: pmask/pmask.c
+	$(CC) -c pmask/pmask.c -o pmask/pmask.o $(CFLAGS)
+
+al_screen/al_screen.o: al_screen/al_screen.c
+	$(CC) -c al_screen/al_screen.c -o al_screen/al_screen.o $(CFLAGS)
+
+Hax_Box_private.res: Hax_Box_private.rc icon.rc 
+	$(WINDRES) -i Hax_Box_private.rc --input-format=rc -o Hax_Box_private.res -O coff 

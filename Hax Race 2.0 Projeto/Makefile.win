@@ -1,0 +1,39 @@
+# Project: Hax_Race
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = Hax_Race_2.0_private.res
+OBJ  = "Hax\ Race\ 2.o" pmask/pmask.o al_screen/al_screen.o $(RES)
+LINKOBJ  = "Hax Race 2.o" pmask/pmask.o al_screen/al_screen.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -L"C:/Documents and Settings/aluno/Meus documentos/Dev-CppPortable/App/devcpp/lib" -mwindows -lalleg_s -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lole32 -ldinput -lddraw -ldxguid -lwinmm -ldsound -lalpng -lalgif -ljpgal -lgstrm -lalleg   
+INCS =  -I"C:/Dev-Cpp/include" 
+CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
+BIN  = "Hax Race 2.0"
+CXXFLAGS = $(CXXINCS) -DALLEGRO_STATICLINK  
+CFLAGS = $(INCS) -DALLEGRO_STATICLINK  
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before "Hax Race 2.0" all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o "Hax Race 2.0" $(LIBS)
+
+"Hax\ Race\ 2.o": Hax\ Race\ 2.c
+	$(CC) -c "Hax Race 2.c" -o "Hax Race 2.o" $(CFLAGS)
+
+pmask/pmask.o: pmask/pmask.c
+	$(CC) -c pmask/pmask.c -o pmask/pmask.o $(CFLAGS)
+
+al_screen/al_screen.o: al_screen/al_screen.c
+	$(CC) -c al_screen/al_screen.c -o al_screen/al_screen.o $(CFLAGS)
+
+Hax_Race_2.0_private.res: Hax_Race_2.0_private.rc icon.rc 
+	$(WINDRES) -i Hax_Race_2.0_private.rc --input-format=rc -o Hax_Race_2.0_private.res -O coff 
