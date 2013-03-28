@@ -3,5 +3,5 @@
 updatemethod = 4
 colordepth = 32
 volume = 128
-exibirFps = 1
+exibirFps = 0
 vsync = 1
