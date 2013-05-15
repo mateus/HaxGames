@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="snake" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output=".\snake" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="alfont" />
+					<Add library="alld" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output=".\snake" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="alfont" />
+					<Add library="alleg" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="al_screen\al_screen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="al_screen\al_screen.h" />
+		<Unit filename="al_screen\article.txt" />
+		<Unit filename="al_screen\readme.txt" />
+		<Unit filename="allegro_iniciacao.cpp" />
+		<Unit filename="allegro_iniciacao.h" />
+		<Unit filename="config.txt" />
+		<Unit filename="funcoes\funcoes.cpp" />
+		<Unit filename="funcoes\funcoes.h" />
+		<Unit filename="funcoes\snake.cpp" />
+		<Unit filename="funcoes\snake.h" />
+		<Unit filename="icon.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="main.cpp" />
+		<Unit filename="pmask\pmask.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pmask\pmask.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
