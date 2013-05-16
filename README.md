@@ -31,17 +31,17 @@ Jogos criados durante o primeiro ano na faculdade.
 ![ft1](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HB-1.jpg)
 ![ft2](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HB-2.jpg)
 
-## Snake (Allegro)
+## Snake 2.0
 #### Desenvolvedores
 * Arthur Assuncao<br>
 ![Snake (Allegro)](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Snake_allegro-1.png)
 
-## Naves (Pascal)
+## Naves 1.0
 #### Desenvolvedores
 * Arthur Assuncao<br>
 ![Naves Pascal](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Naves_pascal-1.png)
 ![Naves Pascal Multiplayer](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Naves_pascal-2.png)
 
-## Snake (Pascal)
+## Snake 1.0
 #### Desenvolvedores
 * Arthur Assuncao
