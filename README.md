@@ -4,7 +4,7 @@ HaxGames
 Jogos criados durante o primeiro ano do curso Superior em Tecnologia em Sistemas para Internet no Instituto Federal de Educação, Ciência e Tecnologia do Sudeste de Minas Gerais.<br>
 Jogos desenvolvidos em Pascal, C e Allegro, durante as disciplinas do primeiro e segundo semestre de 2011.
 
-## Hax Race 1
+## Hax Race 1.0
 #### Desenvolvedores
 * Mateus Ferreira
 * Arthur Assuncao
@@ -12,18 +12,18 @@ Jogos desenvolvidos em Pascal, C e Allegro, durante as disciplinas do primeiro e
 * Vinicius Lehmann
 * Edgar Ferreira
 
-![Hax Race 1 - Menu](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR1-1.jpg)
-![Hax Race 1 - Gameplay](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR1-2.jpg)
-![Hax Race 1 - Creditos](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR1-3.jpg)
+![Hax Race 1.0 - Menu](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR1-1.jpg)
+![Hax Race 1.0 - Gameplay](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR1-2.jpg)
+![Hax Race 1.0 - Creditos](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR1-3.jpg)
 
-## Hax Race 2
+## Hax Race 2.0
 #### Desenvolvedores
 * Mateus Ferreira
 * Arthur Assuncao
 
-![Hax Race 2 - Menu](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR2-1.jpg)
-![Hax Race 2 Modo Carro - Gameplay](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR2-2.jpg)
-![Hax Race 2 Modo Aviao - Gameplay](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR2-3.jpg)
+![Hax Race 2.0 - Menu](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR2-1.jpg)
+![Hax Race 2.0 Modo Carro - Gameplay](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR2-2.jpg)
+![Hax Race 2.0 Modo Aviao - Gameplay](https://raw.github.com/mtsferreirasilva/HaxGames/master/screenshots/HR2-3.jpg)
 
 ## Hax Box
 #### Desenvolvedores
@@ -36,9 +36,9 @@ Jogos desenvolvidos em Pascal, C e Allegro, durante as disciplinas do primeiro e
 #### Desenvolvedores
 * Arthur Assuncao
 
-![Snake (Allegro) - Gameplay](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Snake_allegro-1.png)
+![Snake 2.0 (Allegro) - Gameplay](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Snake_allegro-1.png)
 
-## Naves 1.0
+## Naves
 #### Desenvolvedores
 * Arthur Assuncao
 
