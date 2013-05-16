@@ -1,7 +1,7 @@
 HaxGames
 ========
 
-Jogos criados durante o primeiro ano do curso Superior em Tecnologia em Sistemas para Internet no Instituto Federal de Educação, Ciência e Tecnologia do Sudeste de Minas Gerais.
+Jogos criados durante o primeiro ano do curso Superior em Tecnologia em Sistemas para Internet no Instituto Federal de Educação, Ciência e Tecnologia do Sudeste de Minas Gerais.<br>
 Jogos desenvolvidos em Pascal, C e Allegro, durante as disciplinas do primeiro e segundo semestre de 2011.
 
 ## Hax Race 1
@@ -34,12 +34,14 @@ Jogos desenvolvidos em Pascal, C e Allegro, durante as disciplinas do primeiro e
 
 ## Snake 2.0
 #### Desenvolvedores
-* Arthur Assuncao<br>
+* Arthur Assuncao
+
 ![Snake (Allegro) - Gameplay](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Snake_allegro-1.png)
 
 ## Naves 1.0
 #### Desenvolvedores
-* Arthur Assuncao<br>
+* Arthur Assuncao
+
 ![Naves Pascal - Gameplay](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Naves_pascal-1.png)
 ![Naves Pascal Multiplayer - Gameplay](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Naves_pascal-2.png)
 
