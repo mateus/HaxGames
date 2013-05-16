@@ -1,50 +1,35 @@
 program Nave_by_Arthur;
 
-uses crt, dos;
+uses crt, graph, dos;
 
 const largura=50;
       altura=25;
       dist=1; {dist=distancia da parede ate a nave}
+      maximoInimigos=5;
 
-var x, y, x2, y2, xi, yi, xt, yt, xt2, yt2, xti, yti, xs, ys, xs2, ys2:integer; {x y= eu, xi yi= inimigo, xt yt= tiro}
-	cor, corasa, cont, velocidade, inimigos_mortos, level:integer;
-	l, i, j, k, m:integer;
+var  xi, yi, xti, yti, cont, cor, corasa:array[1..maximoInimigos] of integer;
+	cont2, inimigo_morreu1, inimigo_morreu2, tiroinimigo1:array[1..maximoInimigos] of boolean;
+	
+	x, y, x2, y2, xt, yt, xt2, yt2, xs, ys, xs2, ys2:integer; {x y= eu, xi yi= inimigo, xt yt= tiro}
+	velocidade, inimigos_mortos, level, numeroinimigos:integer;
+	i, j:integer;
 	pontos1, vidas1, num_especial1:integer;
 	pontos2, vidas2, num_especial2:integer;
 
 	teclas, teclas2:char;
 	teclas3, teclas4:char;
-	morreu, inimigo_morreu1, inimigo_morreu2, nave1morreu, nave2morreu, cont2, multiplayer:boolean;
-	tiro1,  tiro2, tiroinimigo1, especial1, especial2:boolean;     {tiro1= nave1, tiro2=nave2}
+	morreu, nave1morreu, nave2morreu, multiplayer:boolean;
+	tiro1,  tiro2, especial1, especial2:boolean;     {tiro1= nave1, tiro2=nave2}
 	xrandom, aux_xrandom:integer; {randon para o xi do inimigo}
 	
-	{hora, }min, seg, mili:integer;
-	
 	menu:char;
-	TelaInicialaux:boolean;
+	TelaInicialaux, saiu:boolean;
 	
-	tecla:char;
-	{op:char;} opcao:integer;
-	Dia, Mes, Ano, Hora, Minuto, Segundo, Dec_Segundo, Dia_Semana : word;{ para ser usado no getDate}
+	{hora, min, seg, mili:integer;}
 
      {TeclasDosUsuarios: file of string;}
 
 {----------------- Procedimentos ------------------}
-
-
-{Procedimentos do menu}
-procedure mudacor;
-begin
-	textbackground(3);
-	textcolor(15);
-end;
-
-procedure voltacor;
-begin
-	textcolor(lightgreen);
-	textbackground(0);
-end;
-{fim procedimentos menu}
 
 procedure TeclasUsadas;
 begin
@@ -101,27 +86,44 @@ begin
 	readln;
 end;
 
+procedure mudacor;
+begin
+	randomize;
+	repeat
+		randomize;
+		cor[i]:=random(15);
+	until cor[i]<>0;
+	repeat
+	
+		randomize;
+		corasa[i]:=random(15);
+	until corasa[i]<>0;
+end;
+
 procedure fim;
 begin
 	clrscr;
+	TelaInicialaux:=true;
+	morreu:=true;
 	repeat
-		textcolor(cor);
+		textcolor(cor[1]);
 		gotoxy(20,5);
 		writeln('Game Over');
 		writeln;
-		gotoxy(20,7);
-		writeln('Pontuacao Nave 1 = ',pontos1);
-		if multiplayer then
+		if not saiu then
 		begin
-			gotoxy(20,9);
-			writeln('Pontuacao Nave 2 = ',pontos2);
+			gotoxy(20,7);
+			writeln('Pontuacao Nave 1 = ',pontos1);
+			if (multiplayer) then
+			begin
+				gotoxy(20,9);
+				writeln('Pontuacao Nave 2 = ',pontos2);
+			end;
 		end;
 		randomize;
-		cor:=random(15);
-		corasa:=random(15);
-		morreu:=true;
+		cor[1]:=random(15);
+		corasa[1]:=random(15);
 		delay(200);
-		TelaInicialaux:=true;
 	until keypressed;
 	exit;
 end;
@@ -142,189 +144,65 @@ end;
 
 Procedure TelaInicial;
 begin
+	{gotoxy(32,8);}
+	for i:=1 to 80 do
+	write('_');
+	textcolor(lightred);
+	gotoxy(32,2);
+	writeln('Machine Space 1.0');
+	textcolor(lightgreen);
+	for i:=1 to 80 do
+	write('_');
 	
-repeat
-    clrscr;
-	x:=1;
+	gotoxy(32,5);
+	writeln('1 - Single Player');
+	gotoxy(32,7);
+	writeln('2 - MultiPlayer');
+	gotoxy(32,9);
+	writeln('3 - Ver teclas');
+	gotoxy(32,11);
+	writeln('4 - Historia');
+	gotoxy(32,13);
+	writeln('5 - Creditos');
+	gotoxy(32,15);
+	writeln('6 - Sair');
+	gotoxy(80,24);
+	
 	i:=0;
 	j:=0;
-	k:=1;
-	m:=80;
-	{repeat }
-	{clrscr;}
-	{======Titulo======}
-	textcolor(lightgreen);
-	for l:=1 to 80 do
-		write('_');
-	textcolor(lightred);
-	gotoxy(20,2);
-	writeln('Machine Space 1.0');
-	voltacor;
-	for l:=1 to 80 do
-		write('_');
-	{======Fim Titulo=====}
 	repeat
-		
-	gotoxy(18,5);
-	textcolor(lightgreen); {cor das opcoes}
-	if x=1 then
-		mudacor;
-	writeln('Single Player          ');
-	voltacor;
-	gotoxy(18,6);
-	if x=2 then
-		mudacor;
-	writeln('MultiPlayer            ');
-	voltacor;
-	gotoxy(18,7);
-	if x=3 then
-		mudacor;
-	writeln('Ver teclas             ');
-	voltacor;
-	gotoxy(18,8);
-	if x=4 then
-		mudacor;
-	writeln('Creditos               ');
-	voltacor;
-	gotoxy(18,9);
-	if x=5 then
-		mudacor;
-	writeln('Sair                   ');
-	voltacor;
-	textcolor(15);
-	gotoxy(16,4+x);
-	writeln(chr(62));    {use o 62 ou o 16}
-	voltacor;
-	
-	
-	{i:=0;
-	j:=0;}
-	{========Texto q se move=======}
-	repeat
-		GetDate(Ano, Mes, Dia, Dia_Semana);
-		GetTime(Hora, Minuto, Segundo, Dec_Segundo);
-		gotoxy(1,1);
-	 	if minuto<10 then
-			write('_',hora,':0',minuto,':',segundo,'_');
-		gotoxy(1,1);
-		if hora<10 then
-			write('_0',hora,':',minuto,':',segundo,'_');
-        gotoxy(1,1);
-        if segundo<10 then
-			write('_',hora,':',minuto,':0',segundo,'_');
-        gotoxy(1,1);
-        if (hora<10) and (minuto<10) then
-			write('_0',hora,':0',minuto,':',segundo,'_');
-        gotoxy(1,1);
-        if (hora<10) and (minuto<10) and (segundo<10) then
-			write('_0',hora,':0',minuto,':0',segundo,'_');
-        gotoxy(1,1);
-        if (minuto<10) and (segundo<10) then
-			write('_',hora,':0',minuto,':0',segundo,'_');
-        gotoxy(1,1);
-        if (hora<10) and (segundo<10) then
-			write('_0',hora,':',minuto,':0',segundo,'_');
-
-		gotoxy(1,1);
-		if (minuto>=10) and (hora>=10) and (segundo>=10) then
-			write('_',hora,':',minuto,':',segundo,'_');
-		gotoxy(70,1);
-		write('_',dia,'/',mes,'/',ano,'_');
-		
-		{linha para direita andando}
-		{gotoxy(k-1,3);
-		write('_');}
-		
-		{if k=0 then
-		begin
-			gotoxy(80,3);
-			write('_');
-		end;}
-		
-		if k<40 then
-			textcolor(5)
-		else
-			textcolor(lightgreen);
-		gotoxy(k,3);
-		write('_');
-		k:=k+1;
-		if k=81 then
-			k:=0;
-		
-		{linha para esquerda}
-		voltacor;
-		
-		{gotoxy(1+m,3);
-		write('_');}
-		{if m=81 then
-		begin
-			gotoxy(1,3);
-			write('_');
-		end;}
-		
-		if m>40 then
-			textcolor(5)
-		else
-			textcolor(lightgreen);
-		gotoxy(m,3);
-		write('_');
-		m:=m-1;
-		
-		if m=0 then
-			m:=80;
-			
-		gotoxy(1,2);
-		writeln(' ');
-		gotoxy(1,25);
-		
-		voltacor;
-		if i<36 then
-		begin
-			delay(80);
-			i:=i+1;
-			gotoxy(i,24);                        
-			write(' Criado por Arthur Assuncao - 1 Periodo ');  {texto com 45 caracteres}
-			if i>=36 then
-				j:=0;
-		end;
-		if i>=36 then
-		begin
-			delay(80);
-			j:=j+1;
-			gotoxy(36-j,24);
-			write(' Criado por Arthur Assuncao - 1 Periodo ');
-			if j>=35 then
-				i:=0;
-		end;
-	gotoxy(1,25);
-	until keypressed;
-	{========FIM Texto q se move=======}
-	
-	tecla:=readkey;
-	tecla:=upcase(tecla);
-	case tecla of
-		#80 :begin gotoxy(16,4+x); writeln(' '); x:=x+1; end;
-		#72 :begin gotoxy(16,4+x); writeln(' '); x:=x-1; end;
-	end; 		
-	if x=0 then
-		x:=5
-	else
-	if x=6 then
-		x:=1;
-	
-	
-	gotoxy(80,24);
-	until tecla=#13;
-	opcao:=x;
-	case opcao of
-		1:TelaInicialaux:=true;
-		2:begin multiplayer:=True; TelaInicialaux:=true; end;
-		3:TeclasUsadas;
-		{4:Historia;}
-		4:Creditos;
-		5:begin fim; exit; end; {exit ou Halt}
+		repeat
+			if i<40 then
+			begin
+				delay(120);
+				i:=i+1;
+				gotoxy(i,24);    {total na coluna 80}
+				{textcolor(random(15)); }                           
+				write(' Criado por Arthur Assuncao - 1 Periodo ');  {texto com 40 caracteres}
+				if i>=40 then
+					j:=0;
+			end;
+			if i>=40 then
+			begin
+				delay(120);
+				j:=j+1;
+				gotoxy(40-j,24);
+				{textcolor(random(15)); }
+				write(' Criado por Arthur Assuncao - 1 Periodo ');
+				if j>=39 then
+					i:=0;
+			end;
+		until keypressed;
+		menu:=readkey;
+	until (menu<>'1') or (menu<>'2') or (menu<>'3') or (menu<>'4') or (menu<>'5');
+	case menu of
+		'1':TelaInicialaux:=true;
+		'2':begin multiplayer:=True; TelaInicialaux:=true; end;
+		'3':TeclasUsadas;
+		'4':Historia;
+		'5':Creditos;
+		'6':begin saiu:=true; fim; exit; end; {exit ou Halt}
 	end;
-until (opcao=5) or (TelaInicialaux);
 
 	clrscr;
 end;
@@ -336,9 +214,9 @@ begin
 	{nave1 minha}
 	textcolor(lightred);
      gotoxy(x+dist,y);
-     write('  ');write(#179);write(' ');
+     write('  ');write(#30);write(' ');
      gotoxy(x+dist,y+1);
-     textcolor(yellow);write(' /');textcolor(lightred);write(#178);textcolor(yellow);write('\ ');
+     textcolor(yellow);write(' /');textcolor(lightred);write(#219);textcolor(yellow);write('\ ');
      {gotoxy(1,1);
      gotoxy(x-1,y+1);
      write(' ');}
@@ -365,7 +243,7 @@ begin
      gotoxy(x2+dist,y2);
      write('  ');write(#30);write(' ');  {#179}
      gotoxy(x2+dist,y2+1);
-     textcolor(yellow);write(' /');textcolor(lightcyan);write(#219);textcolor(yellow);write('\ '); {#178}
+     textcolor(yellow);write(' ',#17);textcolor(lightcyan);write(#176);textcolor(yellow);write(#16,' '); {#178}
      gotoxy(80,24);
 end;
 end;
@@ -383,32 +261,43 @@ end;
 procedure naveinimiga;
 begin
      {naveinimiga}
-     delay(50);
-     textcolor(corasa);
-     gotoxy(dist+xi,yi);
-     write(' \');textcolor(cor);write(#178);textcolor(corasa);write('/ ');
-     textcolor(cor);
-     gotoxy(dist+xi,yi+1);
+for j:=1 to numeroinimigos do
+begin
+     delay(60-(numeroinimigos*10));
+     textcolor(corasa[j]);
+     gotoxy(dist+xi[j],yi[j]);
+     write(' \');textcolor(cor[j]);write(#178);textcolor(corasa[j]);write('/ ');
+     textcolor(cor[j]);
+     gotoxy(dist+xi[j],yi[j]+1);
      write('  ');write(#179);write(' ');
-     {gotoxy(1,1);
-     gotoxy(xi-1,yi+1);
-     write(' ');}
      gotoxy(80,24);
+end;
 end;
 
 procedure naveinimiga_apagar;
 begin
      {apagando naveinimiga}
-
-     textcolor(cor);
-     gotoxy(dist+xi,yi);
+for j:=1 to numeroinimigos do
+begin
+     textcolor(cor[j]);
+     gotoxy(dist+xi[j],yi[j]);
      write('  ');write(#32);write('  ');
-     gotoxy(dist+xi,yi+1);
+     gotoxy(dist+xi[j],yi[j]+1);
      write('  ');write(#32);write(' ');
-     {gotoxy(1,1);
-     gotoxy(xi-1,yi+1);
-     write(' ');}
+
      gotoxy(80,24);
+end;
+end;
+
+procedure posicoesinimigos;
+begin
+     case i of
+		1:xi[i]:=25;
+		2:xi[i]:=35;
+		3:xi[i]:=15;
+		4:xi[i]:=5;
+		5:xi[i]:=45;
+	end;
 end;
 
 procedure tiromeu;
@@ -417,7 +306,7 @@ if vidas1>0 then
 begin
 	textcolor(darkgray);
 	gotoxy(xt,yt);
-	write(#124);
+	write(#127);
 	gotoxy(80,24);
 end;
 end;
@@ -439,7 +328,7 @@ if (vidas2>0) and multiplayer then
 begin
 	textcolor(darkgray);
 	gotoxy(xt2,yt2);
-	write(#127);  {#124}
+	write(#124);  {#124}
 	gotoxy(80,24);
 end;
 end;
@@ -461,7 +350,7 @@ if vidas1>0 then
 begin
 	textcolor(darkgray);
 	gotoxy(xs-1,ys);
-	write(#124);write(#124);write(#124);
+	write(#127);write(#127);write(#127);
 	gotoxy(80,24);
 end;
 end;
@@ -483,7 +372,7 @@ if (vidas2>0) and multiplayer then
 begin
 	textcolor(darkgray);
 	gotoxy(xs2-1,ys2);
-	write(#127);write(#127);write(#127);  {#124}
+	write(#124);write(#124);write(#124);  {#124}
 	gotoxy(80,24);
 end;
 end;
@@ -501,26 +390,32 @@ end;
 
 procedure tiroinimigo;
 begin
+for i:=1 to numeroinimigos do
+begin
 	textcolor(darkgray);
-	gotoxy(xti,yti);
+	gotoxy(xti[i],yti[i]);
 	write(#124);
 	gotoxy(80,24);
+end;
 end;
 
 procedure apagartiroinimigo;
 begin
-if tiroinimigo1 then
+for i:=1 to numeroinimigos do
+begin
+if tiroinimigo1[i] then
 	begin
-		gotoxy(xti,yti);
+		gotoxy(xti[i],yti[i]);
 		write(' ');
-		yti:=yti+1;
+		yti[i]:=yti[i]+1;
 		tiroinimigo;
 	end;
+end;
 end;
 
 procedure nave1morre;
 begin
-	if (((xti=x+1+dist) or (xti=x+3+dist)) and (yti=y)) or ((xti=x+2+dist) and (yti=y-1)) then
+	if (((xti[i]=x+1+dist) or (xti[i]=x+3+dist)) and (yti[i]=y)) or ((xti[i]=x+2+dist) and (yti[i]=y-1)) then
 		nave1morreu:=true;
 	
 	if nave1morreu then
@@ -539,7 +434,7 @@ procedure nave2morre;
 begin
 if multiplayer then
 begin
-	if (((xti=x2+1+dist) or (xti=x2+3+dist)) and (yti=y2)) or ((xti=x2+2+dist) and (yti=y2-1)) then
+	if (((xti[i]=x2+1+dist) or (xti[i]=x2+3+dist)) and (yti[i]=y2)) or ((xti[i]=x2+2+dist) and (yti[i]=y2-1)) then
 		nave2morreu:=true;
 	
 	if nave2morreu then
@@ -555,48 +450,63 @@ begin
 end;
 end;
 
-procedure inimigomorre;
+procedure inimigomorre;      
+begin
+	for i:=1 to maximoinimigos do
+	begin
+		inimigo_morreu1[i]:=false;
+	     inimigo_morreu2[i]:=false;                    
+	end;
+for i:=1 to numeroinimigos do
 begin
 	{tiro meu - nave1}
-	if ((xt=dist+xi+1) and (yt<=1)) or ((xt=dist+xi+2) and (yt<=2)) or ((xt=dist+xi+3) and (yt<=1)) then
-	inimigo_morreu1:=true
+	if ((xt=dist+xi[i]+1) and (yt<=1)) or ((xt=dist+xi[i]+3) and (yt<=1)) then
+	inimigo_morreu1[i]:=true
+	
+	else
+	if (xt=dist+xi[i]+2) and (yt=2) then   {tiro acertar meio do inimigo}
+	inimigo_morreu1[i]:=true
 	
 	else {evita q o tiro e o especial qndo acertarem ao mesmo tempo valham como 2 pontos}
 	{especial}
-	if ((xs-1=xi+2+dist) or (xs=xi+2+dist) or (xs+1=xi+2+dist)) and (ys=yi+1) then
-	inimigo_morreu1:=true
+	if ((xs-1=xi[i]+2+dist) or (xs=xi[i]+2+dist) or (xs+1=xi[i]+2+dist)) and (ys=yi[i]+1) then
+	inimigo_morreu1[i]:=true
 	
 	else {especial da esquerda acerta inimigo}
-		if (xs-1=xi+3+dist) and (ys=yi) then
-	     inimigo_morreu1:=true
+		if (xs-1=xi[i]+3+dist) and (ys=yi[i]) then
+	     inimigo_morreu1[i]:=true
 		 
 		else {especial da direita acerta inimigo}
-			if (xs+1=xi+1+dist) and (ys=yi) then
-			inimigo_morreu1:=true;
+			if (xs+1=xi[i]+1+dist) and (ys=yi[i]) then
+			inimigo_morreu1[i]:=true;
 			
 	{fim tiro e especial meu - nave 1}
 
 	{tiro e especial nave 2}
-	if ((xt2=dist+xi+1) and (yt2<=1)) or ((xt2=dist+xi+2) and (yt2<=2)) or ((xt2=dist+xi+3) and (yt2<=1)) then
-	inimigo_morreu2:=true
+	if ((xt2=dist+xi[i]+1) and (yt2<=1)) or ((xt2=dist+xi[i]+3) and (yt2<=1)) then
+	inimigo_morreu2[i]:=true
+	
+	else
+	if (xt2=dist+xi[i]+2) and (yt2=2) then  {tiro acertar meio do inimigo}
+	inimigo_morreu2[i]:=true
 	
 	else {evita q o tiro e o especial qndo acertarem ao mesmo tempo valham como 2 pontos}
 	{especial}
-	if ((xs2-1=xi+2+dist) or (xs2=xi+2+dist) or (xs2+1=xi+2+dist)) and (ys2=yi+1) then
-	inimigo_morreu2:=true
+	if ((xs2-1=xi[i]+2+dist) or (xs2=xi[i]+2+dist) or (xs2+1=xi[i]+2+dist)) and (ys2=yi[i]+1) then
+	inimigo_morreu2[i]:=true
 	
 	else {especial da esquerda acerta inimigo}
-		if (xs2-1=xi+3+dist) and (ys2=yi) then
-	     inimigo_morreu2:=true
+		if (xs2-1=xi[i]+3+dist) and (ys2=yi[i]) then
+	     inimigo_morreu2[i]:=true
 		 
 		else {especial da direita acerta inimigo}
-			if (xs2+1=xi+1+dist) and (ys2=yi) then
-			inimigo_morreu2:=true;
+			if (xs2+1=xi[i]+1+dist) and (ys2=yi[i]) then
+			inimigo_morreu2[i]:=true;
 	
 	{fim tiro e especial nave 2}
 	
 	{se inimgo morreu}
-	if inimigo_morreu1 then
+	if inimigo_morreu1[i] then
 	begin
 		case level of
 			1:pontos1:=pontos1+10;
@@ -606,47 +516,39 @@ begin
 		     5:pontos1:=pontos1+40;
 		     6:pontos1:=pontos1+50;
 		     7:pontos1:=pontos1+60;
-		end;
+		end; 
 		naveinimiga_apagar;
-		xi:=25;
-		yi:=1;
-		randomize;
-		repeat
-			cor:=random(15);
-		until cor<>0;
-		repeat
-			corasa:=random(15);
-		until corasa<>0;
+		posicoesinimigos;
+		yi[i]:=1;
+		gotoxy(60,22);
+		write(i);
+		mudacor;
 		naveinimiga;
 		inc(inimigos_mortos);  {aumenta 1 na variavel inimigos_mortos}
-		inimigo_morreu1:=false;
-	end
-	else
-		if inimigo_morreu2 then
+		inimigo_morreu1[i]:=false;
+
+	end;
+	{else}
+		if inimigo_morreu2[i] then
 		begin
 			case level of
 				1:pontos2:=pontos2+10;
 				2:pontos2:=pontos2+15;
-			     3:pontos2:=pontos2+20;
-			     4:pontos2:=pontos2+30;
-			     5:pontos2:=pontos2+40;
-			     6:pontos2:=pontos2+50;
-			     7:pontos2:=pontos2+60;
+			    3:pontos2:=pontos2+20;
+			    4:pontos2:=pontos2+30;
+			    5:pontos2:=pontos2+40;
+			    6:pontos2:=pontos2+50;
+			    7:pontos2:=pontos2+60;
 			end;
 			naveinimiga_apagar;
-			xi:=25;
-			yi:=1;
-			randomize;
-			repeat
-				cor:=random(15);
-			until cor<>0;
-			repeat
-				corasa:=random(15);
-			until corasa<>0;
+			posicoesinimigos;
+			yi[i]:=1;
+			mudacor;
 			naveinimiga;
 			inc(inimigos_mortos);  {aumenta 1 na variavel inimigos_mortos}
-			inimigo_morreu2:=false;
+			inimigo_morreu2[i]:=false;
 		end;
+end;
 end;
 
 procedure movimentoinimigo;
@@ -655,48 +557,51 @@ begin
      {gettime(hora, min, seg, mili);
      if mili mod 5<>0 then
      begin}
+for i:=1 to numeroinimigos do
+begin
 	     randomize;
 	     xrandom:=random(61);
-	     if not cont2 then
+	     if not cont2[i] then
 	     	aux_xrandom:=xrandom;
 	     {case xrandom of
 	    		0:xrandom:=1;
 	     	1:xrandom:=2;
 	     end; }
 	{end; }
-	if not cont2 then
-	if x+1<>xi+1 then
+	if not cont2[i] then
+	if x+1<>xi[i]+1 then
 	case xrandom of
-		0..5:if xi<largura then
-				xi:=xi+1;
-		6..10:if xi>1 then
-				xi:=xi-1;
-		11..15:if xi<largura then
-				xi:=xi+1;
-		16..35:if xi>1 then
-				xi:=xi-1;
-		36..55:if xi<largura then
-				xi:=xi+1;
-		56..61:if xi>1 then
-				xi:=xi-1;
+		0..5:if xi[i]<largura then
+				xi[i]:=xi[i]+1;
+		6..10:if xi[i]>1 then
+				xi[i]:=xi[i]-1;
+		11..15:if xi[i]<largura then
+				xi[i]:=xi[i]+1;
+		16..35:if xi[i]>1 then
+				xi[i]:=xi[i]-1;
+		36..55:if xi[i]<largura then
+				xi[i]:=xi[i]+1;
+		56..61:if xi[i]>1 then
+				xi[i]:=xi[i]-1;
 	end
 	else
 	begin
-		cont2:=true;
+		cont2[i]:=true;
 	end;    
-	if (cont2) and (xi<largura) and (xi>1) then
+	if (cont2[i]) and (xi[i]<largura) and (xi[i]>1) then
 	case aux_xrandom of
-		0..30:xi:=xi+1;
-		31..61:xi:=xi-1;
+		0..30:xi[i]:=xi[i]+1;
+		31..61:xi[i]:=xi[i]-1;
 	end;	
-	cont:=cont+1;	
-	if (cont<>0) and (not cont2) then
-		cont:=0;
-	if cont>=5 then
+	cont[i]:=cont[i]+1;	
+	if (cont[i]<>0) and (not cont2[i]) then
+		cont[i]:=0;
+	if cont[i]>=5 then
 	begin
-		cont:=0;
-		cont2:=false;
+		cont[i]:=0;
+		cont2[i]:=false;
 	end;
+end;
 	{fim movimento inimigo}
 end;
 
@@ -705,8 +610,7 @@ end;
 
 Begin
 	{HighVideo;}
-	
-	exec('cmd.exe','/c title Naves jogo feito em Pascal por Arthur Assuncao');
+	exec('cmd.exe','/c title Machine Space 1.0                                             by Arthur Assuncao');
 	
 				{Iniciando variaveis}
 	i:=0;
@@ -715,51 +619,54 @@ Begin
 	y:=24;
 	x2:=35;
 	y2:=24;
-	xi:=15;
-	yi:=1;
+	for i:=1 to maximoinimigos do
+	begin
+		posicoesinimigos;
+		yi[i]:=1;
+		xti[i]:=1;
+		yti[i]:=2;
+		inimigo_morreu1[i]:=false;
+		inimigo_morreu2[i]:=false;
+		tiroinimigo1[i]:=false;
+	end;
+	
 	xt:=1;
 	yt:=24;
 	xt2:=1;
 	yt2:=24;
-	xti:=1;
-	yti:=2;
+	
 	xs:=1;
 	ys:=24;
 	xs2:=1;
 	ys2:=24;
+	numeroinimigos:=1;
 	velocidade:=30;
 	level:=1;
 	TelaInicialaux:=false;
+	saiu:=false;
 	
 	multiplayer:=false;
 	
 	tiro1:=false;
 	tiro2:=false;
-	tiroinimigo1:=false;
 	especial1:=false;
 	especial2:=false;
 	num_especial1:=3;
 	num_especial2:=3;
 	inimigos_mortos:=0;
-	inimigo_morreu1:=false;
-	inimigo_morreu2:=false;
-	cont:=0;
 	pontos1:=0;
 	pontos2:=0;
 	vidas1:=3;
 	vidas2:=3;
-	repeat
-		cor:=5; {0 a 15}
-		randomize;
-		cor:=random(15);
-	until cor<>0;	
-	repeat
-		corasa:=5; {0 a 15}
-		randomize;
-		corasa:=random(15);
-	until cor<>0;
+	for i:=1 to maximoinimigos do
+	begin
+		cont[i]:=0;
+		mudacor
+	end;
 			
 			{fim Iniciando Variaveis}
+
+	clrscr;
 
 	textcolor(lightgreen);
 	
@@ -767,6 +674,8 @@ Begin
 		TelaInicial;
 	until TelaInicialaux;
 	
+	if not saiu then
+	begin
 	textcolor(darkgray);
 	for i:=1 to 25 do
 	begin
@@ -780,6 +689,7 @@ Begin
 		gotoxy(i,12);
 		writeln('_');
 	end;
+	end;
 	{for i:=1 to 50 do
 	begin
 		gotoxy(i,1);
@@ -792,8 +702,15 @@ Begin
 	
 	textcolor(lightgreen);
 	
-	
+if not saiu then	
 repeat
+	case level of
+		{1:numeroinimigos:=1;}
+		1,2:numeroinimigos:=2;
+		3:numeroinimigos:=3;
+		4:numeroinimigos:=4;
+		5:numeroinimigos:=5;
+	end;
 
 	apagatiromeu;
 	apagatironave2;
@@ -832,10 +749,36 @@ repeat
 		write('Vidas = ',vidas2);
 	end;
 	
+	{chefe}
+	{if chefe then
+	begin
+		textcolor(lightgreen);
+		if not multiplayer then
+		begin
+			gotoxy(60,20);
+			write('Chefe');
+			gotoxy(60,21);
+		     for j:=1 to vida_chefe do
+		     	write(#220);
+		end;
+		if multiplayer then
+		begin
+			gotoxy(60,22);
+			write('Chefe');
+			gotoxy(60,23);
+		     for j:=1 to vida_chefe do
+		     	write(#220);
+		end;
+	end; }
+	
 	if not multiplayer then
 	begin
 		gotoxy(60,17);
 		write('Nave 2 press 7');
+		gotoxy(60,20);
+		write(cor[1],' ',cor[2],' ',cor[3],' ',cor[4],' ',cor[5]);
+		gotoxy(60,21);
+		write(numeroinimigos);
 	end;
 	gotoxy(80,24);
 
@@ -906,7 +849,7 @@ repeat
 	     end;
      end;
      
-     movimentoinimigo;
+     {movimentoinimigo; }
 	
 	delay(velocidade);
 	
@@ -953,27 +896,27 @@ repeat
 	apagatironave2;
 	apagarespecialnave1;
 	apagarespecialnave2;	
-	
 	inimigomorre;
 	
 	apagatiromeu;
 	apagatironave2;
 	apagarespecialnave1;
 	apagarespecialnave2;
-	
-	inimigomorre;
+	inimigomorre; 
 	
 	{fim tiro meu e especial nave 1}
 	
+	for i:=1 to numeroinimigos do
+	begin
 	{apagar tiro qndo acertar inimigo ou qndo chegar no topo}	
-	if (yt=yi) or (yt<=1) then
+	if (yt=yi[i]) or (yt<=1) then
 	begin
 		gotoxy(xt,yt);
 		write(' ');
 		tiro1:=false;
 		yt:=24;
 	end;
-	if (ys=yi) or (ys<=1) then
+	if (ys=yi[i]) or (ys<=1) then
 	begin
 		gotoxy(xs-1,ys);
 		write('   ');
@@ -981,14 +924,14 @@ repeat
 		ys:=24;
 	end;
 	{nave 2}
-	if (yt2=yi) or (yt2<=1) then
+	if (yt2=yi[i]) or (yt2<=1) then
 	begin
 		gotoxy(xt2,yt2);
 		write(' ');
 		tiro2:=false;
 		yt2:=24;
 	end;
-	if (ys2=yi) or (ys2<=1) then
+	if (ys2=yi[i]) or (ys2<=1) then
 	begin
 		gotoxy(xs2-1,ys2);
 		write('   ');
@@ -997,26 +940,29 @@ repeat
 	end;
      
      {tiro do inimigo}
-	if not tiroinimigo1 then
+     {for i:=1 to numeroinimigos do
+     begin}
+	if not tiroinimigo1[i] then
 	begin
-		xti:=xi+3;
+		xti[i]:=xi[i]+3;
 		tiroinimigo;
-		tiroinimigo1:=true;
+		tiroinimigo1[i]:=true;
 	end;
 	
 	{apagar tiro inimigo qndo me acerta ou acerta a parte de baixo}
-	if (yti=y) or (yti>=24) then
+	if (yti[i]=y) or (yti[i]>=24) then
 	begin
-		gotoxy(xti,yti);
+		gotoxy(xti[i],yti[i]);
 		write(' ');
-		tiroinimigo1:=false;
-		yti:=2;
+		tiroinimigo1[i]:=false;
+		yti[i]:=2;
 	end;
-	
+	end;
+	{end;}
 	apagartiroinimigo;
-	
 	nave1morre;
 	nave2morre;
+	
 	apagartiroinimigo;
 	nave1morre;
 	nave2morre;
@@ -1029,6 +975,6 @@ repeat
      	fim;
      end;
 until (morreu) or ((vidas1<=0) and (vidas2<=0)) or ((not multiplayer) and (vidas1<=0));
-	clrscr;
-	fim;
+	{clrscr;
+	fim;}
 end.
