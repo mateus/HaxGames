@@ -42,6 +42,6 @@ Jogos criados durante o primeiro ano na faculdade.
 ![Naves Pascal](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Naves_pascal-1.png)
 ![Naves Pascal Multiplayer](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Naves_pascal-2.png)
 
-## Snake 2.0
+## Snake 1.0
 #### Desenvolvedores
 * Arthur Assuncao
