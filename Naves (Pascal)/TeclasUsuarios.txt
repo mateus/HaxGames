@@ -1,0 +1,16 @@
+	Player 1
+A - Move para Esquerda
+D - Move para Direita
+H - Atira (e space)
+J - Especial
+O - Pause
+= - Sai do Jogo
+
+	Player 2
+4 - Move para Esquerda
+6 - Move para Direita
+~ - Atira
+] - Especial
+9 - Pause
+Backspace - Sai do Jogo
+7 - Ativa o modo Multiplayer
