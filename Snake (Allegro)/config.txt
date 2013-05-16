@@ -1,0 +1,9 @@
+
+[Inicializacao]
+updatemethod = 4
+colordepth = 32
+volume = 128
+resolucaox = 800
+resolucaoy = 600
+vsync = 0
+exibirFps = 1
