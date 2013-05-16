@@ -48,3 +48,5 @@ Jogos desenvolvidos em Pascal, C e Allegro, durante as disciplinas do primeiro e
 ## Snake 1.0
 #### Desenvolvedores
 * Arthur Assuncao
+
+![Snake 1.0 (Pascal) - Gameplay](https://raw.github.com/arthurassuncao/HaxGames/master/screenshots/Snake_pascal-1.png)
